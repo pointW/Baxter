@@ -24,7 +24,7 @@ main (int argc, char** argv)
   pcl::VoxelGrid<pcl::PointXYZRGB> vg;
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_filtered (new pcl::PointCloud<pcl::PointXYZRGB>);
   vg.setInputCloud (cloud);
-  vg.setLeafSize (0.005f, 0.005f, 0.005f);
+  vg.setLeafSize (0.001f, 0.001f, 0.001f);
   vg.filter (*cloud_filtered);
   std::cout << "PointCloud after filtering has: " << cloud_filtered->points.size ()  << " data points." << std::endl; //*
 
@@ -75,7 +75,7 @@ main (int argc, char** argv)
   std::vector<pcl::PointIndices> cluster_indices;
   pcl::EuclideanClusterExtraction<pcl::PointXYZRGB> ec;
   ec.setClusterTolerance (0.02); // 2cm
-  ec.setMinClusterSize (100);
+  ec.setMinClusterSize (1000);
   ec.setMaxClusterSize (25000);
   ec.setSearchMethod (tree);
   ec.setInputCloud (cloud_filtered);
