@@ -42,10 +42,10 @@ EQUALS = =
 CMAKE_EDIT_COMMAND = /usr/bin/ccmake
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/baxter/wd/pcl/cluster
+CMAKE_SOURCE_DIR = /home/baxter/wd/pcl/publisher
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/baxter/wd/pcl/cluster
+CMAKE_BINARY_DIR = /home/baxter/wd/pcl/publisher
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -72,9 +72,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/baxter/wd/pcl/cluster/CMakeFiles /home/baxter/wd/pcl/cluster/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/baxter/wd/pcl/publisher/CMakeFiles /home/baxter/wd/pcl/publisher/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/baxter/wd/pcl/cluster/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/baxter/wd/pcl/publisher/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -102,19 +102,6 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named cluster_extraction
-
-# Build rule for target.
-cluster_extraction: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 cluster_extraction
-.PHONY : cluster_extraction
-
-# fast build rule for target.
-cluster_extraction/fast:
-	$(MAKE) -f CMakeFiles/cluster_extraction.dir/build.make CMakeFiles/cluster_extraction.dir/build
-.PHONY : cluster_extraction/fast
-
-#=============================================================================
 # Target rules for targets named publisher
 
 # Build rule for target.
@@ -126,30 +113,6 @@ publisher: cmake_check_build_system
 publisher/fast:
 	$(MAKE) -f CMakeFiles/publisher.dir/build.make CMakeFiles/publisher.dir/build
 .PHONY : publisher/fast
-
-cluster_extraction.o: cluster_extraction.cpp.o
-.PHONY : cluster_extraction.o
-
-# target to build an object file
-cluster_extraction.cpp.o:
-	$(MAKE) -f CMakeFiles/cluster_extraction.dir/build.make CMakeFiles/cluster_extraction.dir/cluster_extraction.cpp.o
-.PHONY : cluster_extraction.cpp.o
-
-cluster_extraction.i: cluster_extraction.cpp.i
-.PHONY : cluster_extraction.i
-
-# target to preprocess a source file
-cluster_extraction.cpp.i:
-	$(MAKE) -f CMakeFiles/cluster_extraction.dir/build.make CMakeFiles/cluster_extraction.dir/cluster_extraction.cpp.i
-.PHONY : cluster_extraction.cpp.i
-
-cluster_extraction.s: cluster_extraction.cpp.s
-.PHONY : cluster_extraction.s
-
-# target to generate assembly for a file
-cluster_extraction.cpp.s:
-	$(MAKE) -f CMakeFiles/cluster_extraction.dir/build.make CMakeFiles/cluster_extraction.dir/cluster_extraction.cpp.s
-.PHONY : cluster_extraction.cpp.s
 
 publisher.o: publisher.cpp.o
 .PHONY : publisher.o
@@ -181,13 +144,9 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... cluster_extraction"
 	@echo "... edit_cache"
 	@echo "... publisher"
 	@echo "... rebuild_cache"
-	@echo "... cluster_extraction.o"
-	@echo "... cluster_extraction.i"
-	@echo "... cluster_extraction.s"
 	@echo "... publisher.o"
 	@echo "... publisher.i"
 	@echo "... publisher.s"

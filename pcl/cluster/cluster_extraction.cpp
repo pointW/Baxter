@@ -11,8 +11,7 @@
 #include <pcl/segmentation/extract_clusters.h>
 
 
-int 
-main (int argc, char** argv)
+std::vector<pcl::PointCloud<pcl::PointXYZRGB>::Ptr> getCluster()
 {
   // Read in the cloud data
   pcl::PCDReader reader;
@@ -75,13 +74,17 @@ main (int argc, char** argv)
   std::vector<pcl::PointIndices> cluster_indices;
   pcl::EuclideanClusterExtraction<pcl::PointXYZRGB> ec;
   ec.setClusterTolerance (0.02); // 2cm
-  ec.setMinClusterSize (1000);
+  ec.setMinClusterSize (5000);
   ec.setMaxClusterSize (25000);
   ec.setSearchMethod (tree);
   ec.setInputCloud (cloud_filtered);
   ec.extract (cluster_indices);
-
-  int j = 0;
+  
+  std::vector<pcl::PointCloud<pcl::PointXYZRGB>::Ptr> clusters;
+  std::vector<pcl::PointXYZRGB> centroids;
+  std::vector<pcl::PointCloud<pcl::PointXYZRGB>::Ptr> targets;
+  
+  //int j = 0;
   for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin (); it != cluster_indices.end (); ++it)
   {
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_cluster (new pcl::PointCloud<pcl::PointXYZRGB>);
@@ -91,28 +94,49 @@ main (int argc, char** argv)
     cloud_cluster->height = 1;
     cloud_cluster->is_dense = true;
     
-
-    double r, g, b = 0;
-    for (std::vector<pcl::PointXYZRGB, Eigen::aligned_allocator_indirection<pcl::PointXYZRGB> >::iterator i = cloud_cluster->points.begin(); i != cloud_cluster->points.end(); i++){
+    
+    pcl::CentroidPoint<pcl::PointXYZRGB> centroid;
+    for (std::vector<pcl::PointXYZRGB, Eigen::aligned_allocator_indirection<pcl::PointXYZRGB> >::iterator i = cloud_cluster->points.begin(); i != cloud_cluster->points.end(); i++)
+    {
       pcl::PointXYZRGB p = *i;
-      Eigen::Vector3i rgb = p.getRGBVector3i ();
-      r += rgb(0);
-      g += rgb(1);
-      b += rgb(2);
+      centroid.add(p);
     }
-    r = r/cloud_cluster->points.size();
-    g = g/cloud_cluster->points.size();
-    b = b/cloud_cluster->points.size();
-    std::cout << r << std::endl << g << std::endl << b << std::endl;
+    pcl::PointXYZRGB c;
+    centroid.get(c);
+    
+    
+    clusters.push_back(cloud_cluster);
+    centroids.push_back(c);
+    
     
     
 
-    std::cout << "PointCloud representing the Cluster: " << cloud_cluster->points.size () << " data points." << std::endl;
-    std::stringstream ss;
-    ss << "cloud_cluster_" << j << ".pcd";
-    writer.write<pcl::PointXYZRGB> (ss.str (), *cloud_cluster, false); //*
-    j++;
+    //std::cout << "PointCloud representing the Cluster: " << cloud_cluster->points.size () << " data points." << std::endl;
+    //std::stringstream ss;
+    //ss << "cloud_cluster_" << j << ".pcd";
+    //writer.write<pcl::PointXYZRGB> (ss.str (), *cloud_cluster, false); //*
+    //j++;
   }
-
-  return (0);
+  
+  for (int i = 0; i < clusters.size(); i ++)
+  {
+    Eigen::Vector3i rgb = centroids.at(i).getRGBVector3i ();
+    if (rgb(0) > 100 && rgb(1) > 100 && rgb(2) > 100)
+    {
+      targets.push_back(clusters.at(i));
+      break;
+    }
+  }
+  
+  for (int i = 0; i < clusters.size(); i ++)
+  {
+    Eigen::Vector3i rgb = centroids.at(i).getRGBVector3i ();
+    if (rgb(0) < 50 && rgb(1) < 50 && rgb(2) > 60)
+    {
+      targets.push_back(clusters.at(i));
+      break;
+    }
+  }
+  return targets;
 }
+
